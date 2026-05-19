@@ -41,12 +41,12 @@ pub fn handle_input(ctx:&BTerm) -> Option<PlayerAction>{
     match ctx.key{
         None => None,
         Some(key) => match key{
-            VirtualKeyCode::Left => PlayerAction::Move(-1, 0),
-            VirtualKeyCode::Right => PlayerAction::Move(1, 0),
-            VirtualKeyCode::Up => PlayerAction::Move(0, -1),
-            VirtualKeyCode::Down => PlayerAction::Move(0, 1),
-            VirtualKeyCode::Escape => PlayerAction::Quit,
-            _ => PlayerAction::Wait,
+            VirtualKeyCode::Left => Some(PlayerAction::Move(-1, 0)),
+            VirtualKeyCode::Right => Some(PlayerAction::Move(1, 0)),
+            VirtualKeyCode::Up => Some(PlayerAction::Move(0, -1)),
+            VirtualKeyCode::Down => Some(PlayerAction::Move(0, 1)),
+            VirtualKeyCode::Escape => Some(PlayerAction::Quit),
+            _ => None,
         }
         
     }
