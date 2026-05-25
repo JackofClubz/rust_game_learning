@@ -1,5 +1,5 @@
 /*
-The player should be a # that represent a movable character. 
+The player should be a @ that represent a movable character. 
 The player should be abel to move up and down and left and right using the arrow keys.
 The player should not be able to move through walls. 
  */
