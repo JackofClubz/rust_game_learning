@@ -38,25 +38,21 @@ impl Map{
     }
 
     // generate a new map with the given width and height
-    pub fn new(width: i32, height: i32) -> Self{
-        let mut map = Map{
-            tiles: vec![TileType::Floor; (width * height) as usize],
-            width,
-            height,
-        };
-        // loop through the vec to set walls on the edges of the map, loopp through only the 
-        // edges of the map, and set the tile type to Wall
-        for x in 0..width {
-            map.tiles[map.idx(x, 0)] = TileType::Wall;
-            map.tiles[map.idx(x, height - 1)] = TileType::Wall;
+    pub fn new(width: i32, height: i32) -> Self {
+            let mut tiles = vec![TileType::Floor; (width * height) as usize];
+            
+            for x in 0..width {
+                tiles[(0 * width + x) as usize]            = TileType::Wall;
+                tiles[((height-1) * width + x) as usize]   = TileType::Wall;
+            }
+            for y in 0..height {
+                tiles[(y * width + 0) as usize]             = TileType::Wall;
+                tiles[(y * width + (width-1)) as usize]     = TileType::Wall;
+            }
+            
+            Self { tiles, width, height }
         }
-        for y in 0..height {
-            map.tiles[map.idx(0, y)] = TileType::Wall;
-            map.tiles[map.idx(width - 1, y)] = TileType::Wall;
-        }
-        map
 
-    }
 
     pub fn render(&self, ctx:&mut BTerm){
         ctx.cls();
@@ -75,7 +71,8 @@ impl Map{
             }
         }
     }
-
 }
+
+
 
 

@@ -32,7 +32,7 @@ impl Player{
         }
     }
 
-    pub fn render(&self, ctx: &BTerm){
+    pub fn render(&self, ctx: &mut BTerm){
         ctx.set(self.position.x, self.position.y, RED, BLACK, to_cp437(self.glyph))
     }
 }

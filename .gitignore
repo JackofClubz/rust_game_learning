@@ -19,3 +19,12 @@ Cargo.lock
 
 # Debugging
 .gdb_history
+target/.rustc_info.json
+target/debug/.fingerprint/leetcode_rust_game-1f0d85806ebccfd1/bin-leetcode_rust_game.json
+target/debug/.fingerprint/leetcode_rust_game-1f0d85806ebccfd1/dep-bin-leetcode_rust_game
+target/debug/deps/leetcode_rust_game.exe
+target/debug/deps/leetcode_rust_game.pdb
+target/debug/leetcode_rust_game.pdb
+target/debug/leetcode_rust_game.exe
+target/debug/leetcode_rust_game.d
+target/debug/deps/leetcode_rust_game.d

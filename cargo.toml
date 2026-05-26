@@ -4,5 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+bracket-lib = "0.8.0"
+rand = "0.8.5"
+serde = { version = "1.0", features = ["derive"] }
 
 [dev-dependencies]

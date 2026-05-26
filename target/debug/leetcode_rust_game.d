@@ -1,1 +1,1 @@
-C:\Users\PC001\leetcode_Rust_game\target\debug\leetcode_rust_game.exe: C:\Users\PC001\leetcode_Rust_game\src\main.rs
+C:\Users\PC001\leetcode_Rust_game\target\debug\leetcode_rust_game.exe: C:\Users\PC001\leetcode_Rust_game\src\main.rs C:\Users\PC001\leetcode_Rust_game\src\map.rs C:\Users\PC001\leetcode_Rust_game\src\player.rs
