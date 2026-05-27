@@ -22,6 +22,14 @@ pub enum TileType {
     Floor,
 }
 
+#[derive(Clone, Copy, PartialEq, Debug)]
+pub struct Rectangle{
+    pub x: i32,
+    pub y: i32,
+    pub width: i32,
+    pub height: i32,
+}
+
 //check in_bounds first → then call idx → then index the Vec
 impl Map{
     // calculate the index of a tile in the tiles vector based on its x and y coordinates

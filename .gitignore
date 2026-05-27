@@ -16,6 +16,7 @@ Cargo.lock
 *.a
 *.so
 *.dylib
+target/*
 
 # Debugging
 .gdb_history
