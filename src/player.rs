@@ -5,18 +5,13 @@ The player should not be able to move through walls.
  */
 
 use bracket_lib::prelude::*;
-
+use crate::map::{Position, Map};
 
 pub struct Player{
     pub position:Position,
     pub glyph: char,
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub struct Position{
-    pub x: i32,
-    pub y: i32,
-}
 
 pub enum PlayerAction{
     Move(i32, i32),

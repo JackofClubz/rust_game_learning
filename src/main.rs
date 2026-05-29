@@ -2,8 +2,9 @@ use bracket_lib::prelude::*;
 mod map;
 mod player;
 
-use map::Map;
+use map::{Map, Position};
 use player::{Player, PlayerAction, handle_input};
+
 
 fn main () {
     let context = BTermBuilder::simple80x50()

@@ -9,11 +9,18 @@ We also define a function to render the map to the console.
 use rand::Rng;
 use bracket_lib::prelude::*;
 
+
 #[derive(Clone, PartialEq)]
 pub struct Map{
     pub tiles: Vec<TileType>,
     pub width: i32,
     pub height: i32,
+}
+
+#[derive(Clone, Copy, PartialEq, Eq, Debug)]
+pub struct Position{
+    pub x: i32,
+    pub y: i32,
 }
 
 #[derive(Clone, Copy, PartialEq)]
@@ -78,6 +85,30 @@ impl Map{
                 
             }
         }
+    }
+}
+
+impl Rectangle{
+    pub fn new(x:i32, y:i32, width:i32, height:i32) -> Self{
+        Self { x, y, width, height }
+    }
+    pub fn carve_map(&self, map: &mut Map){
+        let width = map.width;
+        for x in self.x .. self.x + self.width{
+            for y in self.y .. self.y + self.height{
+                let idx = (y*width+x) as usize;
+                map.tiles[idx] = TileType::Floor; 
+            }
+        }
+    }
+    pub fn centre_point(&self) -> Position{
+        Position{
+            x: self.x + self.width / 2,
+            y: self.y + self.height / 2,
+        }
+    }
+    pub fn is_too_small(&self, min_width: i32, min_height: i32) -> bool{
+        self.width < min_width || self.height < min_height
     }
 }
 
