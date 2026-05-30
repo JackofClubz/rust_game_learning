@@ -37,6 +37,15 @@ pub struct Rectangle{
     pub height: i32,
 }
 
+#[derive(Clone, PartialEq, Debug)]
+pub enum BSPNode{
+    Leaf(Rectangle),
+    Node{
+        left: Box<BSPNode>,
+        right: Box<BSPNode>,
+    }
+}
+
 //check in_bounds first → then call idx → then index the Vec
 impl Map{
     // calculate the index of a tile in the tiles vector based on its x and y coordinates
@@ -67,7 +76,6 @@ impl Map{
             
             Self { tiles, width, height }
         }
-
 
     pub fn render(&self, ctx:&mut BTerm){
         ctx.cls();
