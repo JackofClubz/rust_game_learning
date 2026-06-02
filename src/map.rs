@@ -63,18 +63,12 @@ impl Map{
 
     // generate a new map with the given width and height
     pub fn new(width: i32, height: i32) -> Self {
-            let mut tiles = vec![TileType::Floor; (width * height) as usize];
-            
-            for x in 0..width {
-                tiles[(0 * width + x) as usize]            = TileType::Wall;
-                tiles[((height-1) * width + x) as usize]   = TileType::Wall;
-            }
-            for y in 0..height {
-                tiles[(y * width + 0) as usize]             = TileType::Wall;
-                tiles[(y * width + (width-1)) as usize]     = TileType::Wall;
-            }
-            
-            Self { tiles, width, height }
+            let mut tiles = vec![TileType::Wall; (width * height) as usize];
+            let mut map = Map{tiles, width, height};
+            let root_region = Rectangle::new(0, 0, width, height);
+            let bsp_tree = BSPNode::build(root_region,6,4);
+            bsp_tree.traversal(&mut map);
+            return map;
         }
 
     pub fn render(&self, ctx:&mut BTerm){
