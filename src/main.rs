@@ -23,8 +23,8 @@ pub struct State{
 impl State{
     pub fn new() -> Self{
         State{
-            player:Player::new(5,5),
-            map: Map::new(40, 40),
+            player:Player::new(40,25),
+            map: Map::new(80, 50),
         }
     }
 }
