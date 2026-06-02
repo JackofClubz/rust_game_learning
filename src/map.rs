@@ -109,8 +109,8 @@ impl Rectangle{
             y: self.y + self.height / 2,
         }
     }
-    pub fn is_too_small(&self, min_width: i32, min_height: i32) -> bool{
-        self.width < min_width || self.height < min_height
+    pub fn is_too_small(&self, min_width: i32, min_height: i32) -> bool {
+        self.width < min_width * 2 || self.height < min_height * 2
     }
 }
 
