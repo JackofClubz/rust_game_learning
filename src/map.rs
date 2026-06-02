@@ -130,25 +130,28 @@ impl BSPNode{
         let mut rng = rand::thread_rng();
         let split: bool = rng.gen_bool(0.5);
 
-
-        let (left_region, right_region) = if split {
+        let (left_region, right_region) = if split{
+            //vertical split
             let cut = rng.gen_range(min_width..region.width - min_width);
             (
                 Rectangle::new(region.x, region.y, cut, region.height),
                 Rectangle::new(region.x + cut, region.y, region.width - cut, region.height),
             )
-        } else {
-            let cut = rng.gen_range(min_height..region.height - min_height);
+
+        }else{
+            //horizontal split
+            let cut = rng.gen_range(min_height..region.height-min_height);
             (
-                Rectangle::new(region.x, region.y, region.width, cut),
+                Rectangle::new(region.x, region.y, region.width, region.height-cut),
                 Rectangle::new(region.x, region.y + cut, region.width, region.height - cut),
             )
         };
-
-        BSPNode::Node {
-            left:  Box::new(BSPNode::build(left_region, min_width, min_height)),
-            right: Box::new(BSPNode::build(right_region, min_width, min_height)),
+        // build the nodes
+        BSPNode::Node{
+            left: Box::new(BSPNode::build(left_region, min_width, min_height)),
+            right: Box::new(BSPNode::build(right_region, min_width, min_height)),   
         }
+        
     }
 }
 
