@@ -153,6 +153,16 @@ impl BSPNode{
         }
         
     }
+
+    pub fn traversal(&self, map:&mut Map){
+        match self{
+            BSPNode::Leaf(region) => region.carve_map(map),
+            BSPNode::Node{left, right} => {
+                left.traversal(map);
+                right.traversal(map);
+            } 
+        }
+    }
 }
 
 
