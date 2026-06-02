@@ -6,7 +6,7 @@ We repeat this process until we have created a certain number of floor tiles.
 We also define a function to render the map to the console.
 */
 
-use rand::Rng;
+use rand::{Rng, random};
 use bracket_lib::prelude::*;
 
 
@@ -117,6 +117,38 @@ impl Rectangle{
     }
     pub fn is_too_small(&self, min_width: i32, min_height: i32) -> bool{
         self.width < min_width || self.height < min_height
+    }
+}
+
+impl BSPNode{
+    pub fn build(region:Rectangle, min_width:i32, min_height:i32) -> Self{
+        if region.is_too_small(min_width, min_height){
+            return BSPNode::Leaf(region)
+        }
+
+        //randomly choose vertical or horizontal split
+        let mut rng = rand::thread_rng();
+        let split: bool = rng.gen_bool(0.5);
+
+
+        let (left_region, right_region) = if split {
+            let cut = rng.gen_range(min_width..region.width - min_width);
+            (
+                Rectangle::new(region.x, region.y, cut, region.height),
+                Rectangle::new(region.x + cut, region.y, region.width - cut, region.height),
+            )
+        } else {
+            let cut = rng.gen_range(min_height..region.height - min_height);
+            (
+                Rectangle::new(region.x, region.y, region.width, cut),
+                Rectangle::new(region.x, region.y + cut, region.width, region.height - cut),
+            )
+        };
+
+        BSPNode::Node {
+            left:  Box::new(BSPNode::build(left_region, min_width, min_height)),
+            right: Box::new(BSPNode::build(right_region, min_width, min_height)),
+        }
     }
 }
 
