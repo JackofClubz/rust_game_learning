@@ -126,7 +126,7 @@ impl BSPNode{
 
         let (left_region, right_region) = if split{
             //vertical split
-            let cut = rng.gen_range(min_width..region.width - min_width);
+            let cut = rng.gen_range(min_width..=region.width - min_width);
             (
                 Rectangle::new(region.x, region.y, cut, region.height),
                 Rectangle::new(region.x + cut, region.y, region.width - cut, region.height),
@@ -134,9 +134,9 @@ impl BSPNode{
 
         }else{
             //horizontal split
-            let cut = rng.gen_range(min_height..region.height-min_height);
+            let cut = rng.gen_range(min_height..=region.height-min_height);
             (
-                Rectangle::new(region.x, region.y, region.width, region.height-cut),
+                Rectangle::new(region.x, region.y, region.width, cut),
                 Rectangle::new(region.x, region.y + cut, region.width, region.height - cut),
             )
         };
