@@ -94,12 +94,12 @@ impl Rectangle{
     pub fn new(x:i32, y:i32, width:i32, height:i32) -> Self{
         Self { x, y, width, height }
     }
-    pub fn carve_map(&self, map: &mut Map){
+    pub fn carve_map(&self, map: &mut Map) {
         let width = map.width;
-        for x in self.x .. self.x + self.width{
-            for y in self.y .. self.y + self.height{
-                let idx = (y*width+x) as usize;
-                map.tiles[idx] = TileType::Floor; 
+        for x in self.x + 1 .. self.x + self.width - 1 {
+            for y in self.y + 1 .. self.y + self.height - 1 {
+                let idx = (y * width + x) as usize;
+                map.tiles[idx] = TileType::Floor;
             }
         }
     }
@@ -110,7 +110,7 @@ impl Rectangle{
         }
     }
     pub fn is_too_small(&self, min_width: i32, min_height: i32) -> bool {
-        self.width < min_width * 2 || self.height < min_height * 2
+        self.width <= min_width * 2 || self.height <= min_height * 2
     }
 }
 
