@@ -13,6 +13,7 @@ use bracket_lib::prelude::*;
 #[derive(Clone, PartialEq)]
 pub struct Map{
     pub tiles: Vec<TileType>,
+    pub visibility: Vec<Visibility>,
     pub width: i32,
     pub height: i32,
 }
@@ -27,6 +28,13 @@ pub struct Position{
 pub enum TileType {
     Wall,
     Floor,
+}
+
+#[derive(Clone, Copy, PartialEq)]
+pub enum Visibility {
+    Unseen,
+    Remembered,
+    Visible,
 }
 
 #[derive(Clone, Copy, PartialEq, Debug)]
@@ -64,7 +72,8 @@ impl Map{
     // generate a new map with the given width and height
     pub fn new(width: i32, height: i32) -> Self {
             let mut tiles = vec![TileType::Wall; (width * height) as usize];
-            let mut map = Map{tiles, width, height};
+            let mut visibility = vec![Visibility::Unseen; (width * height) as usize];
+            let mut map = Map{tiles, visibility, width, height};
             let root_region = Rectangle::new(0, 0, width, height);
             let bsp_tree = BSPNode::build(root_region,6,4);
             bsp_tree.traversal(&mut map);
