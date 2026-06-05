@@ -82,16 +82,34 @@ impl Map{
 
     pub fn render(&self, ctx:&mut BTerm){
         ctx.cls();
-        for(i, tile) in self.tiles.iter().enumerate(){
+        for i in 0..self.tiles.len(){
             let  x = i % self.width as usize;
             let  y = i / self.width as usize;
+            let vis = self.visibility[i];
 
-            match tile {
-                &TileType::Wall =>{
-                    ctx.set(x as i32,y as i32, WHITE, BLACK, to_cp437('#'))
+            match vis {
+                Visibility::Unseen =>{
+                    ctx.set(x as i32, y as i32, BLACK, BLACK, to_cp437(' '));
                 }
-                &TileType::Floor =>{
-                    ctx.set(x as i32,y as i32, GREY, BLACK, to_cp437('.'))
+                Visibility::Remembered =>{
+                    match tile {
+                        &TileType::Wall => {
+                            ctx.set(x as i32, y as i32, DARKGRAY, BLACK, to_cp437('#'));
+                        }
+                        &TileType::Floor => {
+                            ctx.set(x as i32, y as i32, DARKGREY, BLACK, to_cp437('.'));
+                        }
+                    }
+                }
+                Visibility::Visible =>{
+                    match tile{
+                        &TileType::Wall =>{
+                            ctx.set(x as i32, y as i32, WHITE, BLACK, to_cp437('#'));
+                        }
+                        &TileType::Floor =>{
+                            ctx.set(x as i32, y as i32, WHITE, BLACK, to_cp437('.'));
+                        }
+                    }
                 }
                 
             }
