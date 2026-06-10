@@ -86,6 +86,7 @@ impl Map{
             let  x = i % self.width as usize;
             let  y = i / self.width as usize;
             let vis = self.visibility[i];
+            let tile = self.tiles[i];
 
             match vis {
                 Visibility::Unseen =>{
@@ -93,20 +94,20 @@ impl Map{
                 }
                 Visibility::Remembered =>{
                     match tile {
-                        &TileType::Wall => {
-                            ctx.set(x as i32, y as i32, DARKGRAY, BLACK, to_cp437('#'));
+                        TileType::Wall => {
+                            ctx.set(x as i32, y as i32, DARK_GRAY, BLACK, to_cp437('#'));
                         }
-                        &TileType::Floor => {
-                            ctx.set(x as i32, y as i32, DARKGREY, BLACK, to_cp437('.'));
+                        TileType::Floor => {
+                            ctx.set(x as i32, y as i32, DARK_GREY, BLACK, to_cp437('.'));
                         }
                     }
                 }
                 Visibility::Visible =>{
                     match tile{
-                        &TileType::Wall =>{
+                        TileType::Wall =>{
                             ctx.set(x as i32, y as i32, WHITE, BLACK, to_cp437('#'));
                         }
-                        &TileType::Floor =>{
+                        TileType::Floor =>{
                             ctx.set(x as i32, y as i32, WHITE, BLACK, to_cp437('.'));
                         }
                     }
