@@ -45,6 +45,7 @@ impl GameState for State{
                 PlayerAction::Wait => {},
                 PlayerAction::Quit => ctx.quit(),
             }
+            map::update_fov();
         }
         // Render the map and player
         self.map.render(ctx);

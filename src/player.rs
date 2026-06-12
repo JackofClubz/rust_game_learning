@@ -10,6 +10,7 @@ use crate::map::{Position, Map};
 pub struct Player{
     pub position:Position,
     pub glyph: char,
+    pub radius: i32,
 }
 
 
@@ -24,6 +25,7 @@ impl Player{
         Player{
             position:Position { x, y },
             glyph: '@',
+            radius: 8,
         }
     }
 

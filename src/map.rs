@@ -69,6 +69,10 @@ impl Map{
         self.in_bounds(x, y) && self.tiles[self.idx(x, y)] == TileType::Floor
     }
 
+    pub fn update_fov(position: Position, radius: i32, map: &mut Map){
+        
+    }
+
     // generate a new map with the given width and height
     pub fn new(width: i32, height: i32) -> Self {
             let mut tiles = vec![TileType::Wall; (width * height) as usize];
