@@ -70,7 +70,27 @@ impl Map{
     }
 
     pub fn update_fov(position: Position, radius: i32, map: &mut Map){
-        
+        // based on position look at radius and reset all tiles within radius to Remembered
+        for vis in map.visibility.iter_mut() {
+            match *vis {
+                Visibility::Visible => *vis = Visibility::Remembered,
+                _ => {}
+            }
+            for y in (position.y - radius) ..= (position.y + radius){
+                for x in (position.x - radius) ..= (position.x + radius){
+                    if !map.in_bounds(x, y){
+                        continue;
+                    }
+
+                    let dx = x - position.x;
+                    let dy = y - position.y;
+                    if (dx*dx + dy*dy) > radius*radius{
+                        continue;
+                    }
+                    
+                }
+            }
+        }
     }
 
     // generate a new map with the given width and height
