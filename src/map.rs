@@ -6,6 +6,8 @@ We repeat this process until we have created a certain number of floor tiles.
 We also define a function to render the map to the console.
 */
 
+use std::ops::AddAssign;
+
 use rand::{Rng, random};
 use bracket_lib::prelude::*;
 
@@ -139,6 +141,20 @@ impl Map{
                 
             }
         }
+    }
+    pub fn bresenham_line(start: Position, end: Position) -> Vec<Position>{
+        // calculate dx dy
+        let dx = (end.x - start.x).abs();
+        let dy = (end.y - start.y).abs();
+
+        // decide whether we move positively or negatively based on direction
+        let x_step = if end.x > start.x {1} else {-1};
+        let y_step = if end.y > start.y {1} else {-1};
+
+        //choose primary axis, 1 is x primary where 0 is y primary
+        
+
+
     }
 }
 
