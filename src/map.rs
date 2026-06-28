@@ -151,10 +151,36 @@ impl Map{
         let x_step = if end.x > start.x {1} else {-1};
         let y_step = if end.y > start.y {1} else {-1};
 
-        //choose primary axis, 1 is x primary where 0 is y primary
-        
+        //choose primary axis
+        let mut x = start.x;
+        let mut y = start.y;
+        let mut error = 0;
+        let mut position = Vec::new();
 
-
+        if dx >= dy{
+            while x != end.x{
+                //x is primary_axis
+                x += x_step;
+                error += 2*dy;
+                if error >= dx{
+                    y += y_step;
+                    error -= 2*dx;
+                }
+                position.push(Position{x, y});
+            }
+        }else{
+            while y != end.y{
+                //y is primary_axis
+                y += y_step;
+                error += 2*dx;
+                if error >= dy{
+                    x += x_step;
+                    error -= 2*dy;
+                }
+                position.push(Position{x, y});
+            }
+        }
+        position 
     }
 }
 
