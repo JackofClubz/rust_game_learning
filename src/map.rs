@@ -71,6 +71,47 @@ impl Map{
         self.in_bounds(x, y) && self.tiles[self.idx(x, y)] == TileType::Floor
     }
 
+    pub fn bresenham_line(start: Position, end: Position) -> Vec<Position>{
+        // calculate dx dy
+        let dx = (end.x - start.x).abs();
+        let dy = (end.y - start.y).abs();
+
+        // decide whether we move positively or negatively based on direction
+        let x_step = if end.x > start.x {1} else {-1};
+        let y_step = if end.y > start.y {1} else {-1};
+
+        //choose primary axis
+        let mut x = start.x;
+        let mut y = start.y;
+        let mut error = 0;
+        let mut position = Vec::new();
+
+        if dx >= dy{
+            while x != end.x{
+                //x is primary_axis
+                x += x_step;
+                error += 2*dy;
+                if error >= dx{
+                    y += y_step;
+                    error -= 2*dx;
+                }
+                position.push(Position{x, y});
+            }
+        }else{
+            while y != end.y{
+                //y is primary_axis
+                y += y_step;
+                error += 2*dx;
+                if error >= dy{
+                    x += x_step;
+                    error -= 2*dy;
+                }
+                position.push(Position{x, y});
+            }
+        }
+        position 
+    }
+
     pub fn update_fov(position: Position, radius: i32, map: &mut Map){
         // based on position look at radius and reset all tiles within radius to Remembered
         for vis in map.visibility.iter_mut() {
@@ -88,6 +129,12 @@ impl Map{
                     let dy = y - position.y;
                     if (dx*dx + dy*dy) > radius*radius{
                         continue;
+                    }
+
+                    let line = bresenham_line(position, Position{x, y});
+                    for pos in line.iter(){
+                        
+                    }
                     }
                     
                 }
@@ -141,46 +188,6 @@ impl Map{
                 
             }
         }
-    }
-    pub fn bresenham_line(start: Position, end: Position) -> Vec<Position>{
-        // calculate dx dy
-        let dx = (end.x - start.x).abs();
-        let dy = (end.y - start.y).abs();
-
-        // decide whether we move positively or negatively based on direction
-        let x_step = if end.x > start.x {1} else {-1};
-        let y_step = if end.y > start.y {1} else {-1};
-
-        //choose primary axis
-        let mut x = start.x;
-        let mut y = start.y;
-        let mut error = 0;
-        let mut position = Vec::new();
-
-        if dx >= dy{
-            while x != end.x{
-                //x is primary_axis
-                x += x_step;
-                error += 2*dy;
-                if error >= dx{
-                    y += y_step;
-                    error -= 2*dx;
-                }
-                position.push(Position{x, y});
-            }
-        }else{
-            while y != end.y{
-                //y is primary_axis
-                y += y_step;
-                error += 2*dx;
-                if error >= dy{
-                    x += x_step;
-                    error -= 2*dy;
-                }
-                position.push(Position{x, y});
-            }
-        }
-        position 
     }
 }
 
