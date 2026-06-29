@@ -56,22 +56,7 @@ pub enum BSPNode{
     }
 }
 
-//check in_bounds first → then call idx → then index the Vec
-impl Map{
-    // calculate the index of a tile in the tiles vector based on its x and y coordinates
-    pub fn idx(&self, x: i32, y: i32) -> usize {
-        (y * self.width + x) as usize
-    }
-    //check if the given coordinates are within the bounds of the map
-    pub fn in_bounds(&self, x: i32, y: i32) -> bool {
-        x >= 0 && x < self.width && y >= 0 && y < self.height
-    }
-    // verify whether we can enter a tile at the given coordinates (i.e., if it's a floor tile)
-    pub fn can_enter(&self, x: i32, y: i32) -> bool {
-        self.in_bounds(x, y) && self.tiles[self.idx(x, y)] == TileType::Floor
-    }
-
-    pub fn bresenham_line(start: Position, end: Position) -> Vec<Position>{
+pub fn bresenham_line(start: Position, end: Position) -> Vec<Position>{
         // calculate dx dy
         let dx = (end.x - start.x).abs();
         let dy = (end.y - start.y).abs();
@@ -112,34 +97,53 @@ impl Map{
         position 
     }
 
-    pub fn update_fov(position: Position, radius: i32, map: &mut Map){
-        // based on position look at radius and reset all tiles within radius to Remembered
-        for vis in map.visibility.iter_mut() {
-            match *vis {
-                Visibility::Visible => *vis = Visibility::Remembered,
-                _ => {}
+pub fn update_fov(position: Position, radius: i32, map: &mut Map){
+    // based on position look at radius and reset all tiles within radius to Remembered
+    for vis in map.visibility.iter_mut() {
+        match *vis {
+            Visibility::Visible => *vis = Visibility::Remembered,
+            _ => {}
+        }
+    }
+    for y in (position.y - radius) ..= (position.y + radius){
+        for x in (position.x - radius) ..= (position.x + radius){
+            if !map.in_bounds(x, y){
+                continue;
             }
-            for y in (position.y - radius) ..= (position.y + radius){
-                for x in (position.x - radius) ..= (position.x + radius){
-                    if !map.in_bounds(x, y){
-                        continue;
-                    }
 
-                    let dx = x - position.x;
-                    let dy = y - position.y;
-                    if (dx*dx + dy*dy) > radius*radius{
-                        continue;
-                    }
+            let dx = x - position.x;
+            let dy = y - position.y;
+            if (dx*dx + dy*dy) > radius*radius{
+                continue;
+            }
 
-                    let line = bresenham_line(position, Position{x, y});
-                    for pos in line.iter(){
-                        
-                    }
-                    }
-                    
+            let line = bresenham_line(position, Position{x, y});
+            for pos in line.iter(){
+                let idx = map.idx(pos.x, pos.y);
+                map.visibility[idx] = Visibility::Visible;
+                if map.tiles[idx] == TileType::Wall{
+                    break;
                 }
+
             }
         }
+            
+    }
+}
+
+//check in_bounds first → then call idx → then index the Vec
+impl Map{
+    // calculate the index of a tile in the tiles vector based on its x and y coordinates
+    pub fn idx(&self, x: i32, y: i32) -> usize {
+        (y * self.width + x) as usize
+    }
+    //check if the given coordinates are within the bounds of the map
+    pub fn in_bounds(&self, x: i32, y: i32) -> bool {
+        x >= 0 && x < self.width && y >= 0 && y < self.height
+    }
+    // verify whether we can enter a tile at the given coordinates (i.e., if it's a floor tile)
+    pub fn can_enter(&self, x: i32, y: i32) -> bool {
+        self.in_bounds(x, y) && self.tiles[self.idx(x, y)] == TileType::Floor
     }
 
     // generate a new map with the given width and height
