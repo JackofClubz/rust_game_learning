@@ -262,6 +262,13 @@ impl BSPNode{
             } 
         }
     }
+
+    pub fn find_first_room(&self) -> Option<Position>{
+        match self{
+            BSPNode::Leaf(region) => region.centre_point(),
+            BSPNode::Node(left) => continue;
+        }
+    }
 }
 
 
