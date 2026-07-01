@@ -13,7 +13,6 @@ pub struct Player{
     pub radius: i32,
 }
 
-
 pub enum PlayerAction{
     Move(i32, i32),
     Wait,
