@@ -20,11 +20,13 @@ pub struct State{
     map: Map,
 }
 
-impl State{
-    pub fn new() -> Self{
-        State{
-            player:Player::new(40,25),
-            map: Map::new(80, 50),
+impl State {
+    pub fn new() -> Self {
+        let map = Map::new(80, 50);
+        let starting_position = map.starting_position;
+        State {
+            player: Player::new(starting_position),
+            map,
         }
     }
 }

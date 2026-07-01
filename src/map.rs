@@ -18,6 +18,7 @@ pub struct Map{
     pub visibility: Vec<Visibility>,
     pub width: i32,
     pub height: i32,
+    pub starting_position: Position,
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -150,9 +151,10 @@ impl Map{
     pub fn new(width: i32, height: i32) -> Self {
             let mut tiles = vec![TileType::Wall; (width * height) as usize];
             let mut visibility = vec![Visibility::Unseen; (width * height) as usize];
-            let mut map = Map{tiles, visibility, width, height};
             let root_region = Rectangle::new(0, 0, width, height);
             let bsp_tree = BSPNode::build(root_region,6,4);
+            let starting_position = bsp_tree.find_first_room();
+            let mut map = Map{tiles, visibility, width, height, starting_position};
             bsp_tree.traversal(&mut map);
             return map;
         }
@@ -208,11 +210,11 @@ impl Rectangle{
             }
         }
     }
-    pub fn centre_point(&self) -> Option<Position>{
-        Some(Position{
+    pub fn centre_point(&self) -> Position{
+        Position{
             x: self.x + self.width / 2,
             y: self.y + self.height / 2,
-        })
+        }
     }
     pub fn is_too_small(&self, min_width: i32, min_height: i32) -> bool {
         self.width <= min_width * 2 || self.height <= min_height * 2
@@ -263,11 +265,11 @@ impl BSPNode{
         }
     }
 
-    pub fn find_first_room(&self) -> Option<Position>{
+    pub fn find_first_room(&self) -> Position{
         match self{
             BSPNode::Leaf(region) => region.centre_point(),
             BSPNode::Node{left, right} => {
-                left.find_first_room().or_else(|| right.find_first_room())
+                left.find_first_room()
             }
         }
     }

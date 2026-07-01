@@ -21,9 +21,9 @@ pub enum PlayerAction{
 }
 
 impl Player{
-    pub fn new(x:i32, y:i32)-> Self{
+    pub fn new(position: Position)-> Self{
         Player{
-            position:Position { x, y },
+            position,
             glyph: '@',
             radius: 8,
         }
