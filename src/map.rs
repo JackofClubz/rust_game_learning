@@ -208,11 +208,11 @@ impl Rectangle{
             }
         }
     }
-    pub fn centre_point(&self) -> Position{
-        Position{
+    pub fn centre_point(&self) -> Option<Position>{
+        Some(Position{
             x: self.x + self.width / 2,
             y: self.y + self.height / 2,
-        }
+        })
     }
     pub fn is_too_small(&self, min_width: i32, min_height: i32) -> bool {
         self.width <= min_width * 2 || self.height <= min_height * 2
@@ -266,7 +266,9 @@ impl BSPNode{
     pub fn find_first_room(&self) -> Option<Position>{
         match self{
             BSPNode::Leaf(region) => region.centre_point(),
-            BSPNode::Node(left) => continue;
+            BSPNode::Node{left, right} => {
+                left.find_first_room().or_else(|| right.find_first_room())
+            }
         }
     }
 }
