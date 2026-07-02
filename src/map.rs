@@ -9,7 +9,7 @@ We also define a function to render the map to the console.
 use std::ops::AddAssign;
 
 use rand::{Rng, random};
-use bracket_lib::prelude::*;
+use bracket_lib::{prelude::*, terminal::VirtualKeyCode::M};
 
 
 #[derive(Clone, PartialEq)]
@@ -153,6 +153,11 @@ impl Map{
             let mut visibility = vec![Visibility::Unseen; (width * height) as usize];
             let root_region = Rectangle::new(0, 0, width, height);
             let bsp_tree = BSPNode::build(root_region,6,4);
+
+            // gather rectangles coordiantes, cycle though bsp_tree to gather 
+            // each rectangle in order
+            let mut room_vec = Vec::new();
+            room_vec.push(bsp_tree.collect_rooms().collect::<Vec<_>>());
             let starting_position = bsp_tree.find_first_room();
             let mut map = Map{tiles, visibility, width, height, starting_position};
             bsp_tree.traversal(&mut map);
@@ -263,6 +268,18 @@ impl BSPNode{
                 right.traversal(map);
             } 
         }
+    }
+
+    pub fn collect_rooms(&self) -> Vec<Rectangle> {
+        let mut rooms = Vec::new();
+        match self {
+            BSPNode::Leaf(region) => rooms.push(*region),
+            BSPNode::Node { left, right } => {
+                rooms.extend(left.collect_rooms());
+                rooms.extend(right.collect_rooms());
+            }
+        }
+        rooms
     }
 
     pub fn find_first_room(&self) -> Position{
