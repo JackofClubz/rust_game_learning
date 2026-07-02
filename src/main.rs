@@ -1,9 +1,12 @@
 use bracket_lib::prelude::*;
 mod map;
 mod player;
+mod enemy;
 
 use map::{Map, Position};
 use player::{Player, PlayerAction, handle_input};
+
+use crate::enemy::Enemy;
 
 
 fn main () {
@@ -18,6 +21,7 @@ fn main () {
 pub struct State{
     player: Player,
     map: Map,
+    enemies: Vec<Enemy>, 
 }
 
 impl State {
@@ -27,6 +31,7 @@ impl State {
         State {
             player: Player::new(starting_position),
             map,
+            enemies: vec![Enemy::new(Position { x: 45, y: 25 })],
         }
     }
 }

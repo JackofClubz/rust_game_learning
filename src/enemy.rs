@@ -13,3 +13,24 @@ pub struct Enemy{
     pub glyph: char,
     pub radius: i32,
 }
+
+
+pub enum EnemyAction{
+    Move(i32, i32),
+    Wait,
+    Quit,
+}
+
+impl Enemy{
+    pub fn new(position: Position)-> Self{
+        Enemy{
+            position,
+            glyph: 'E',
+            radius: 8,
+        }
+    }
+
+    pub fn render(&self, ctx: &mut BTerm){
+        ctx.set(self.position.x, self.position.y, RED, BLACK, to_cp437(self.glyph))
+    }
+}
