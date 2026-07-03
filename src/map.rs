@@ -153,11 +153,13 @@ impl Map{
             let mut visibility = vec![Visibility::Unseen; (width * height) as usize];
             let root_region = Rectangle::new(0, 0, width, height);
             let bsp_tree = BSPNode::build(root_region,6,4);
+            let rng = rand::thread_rng();
 
             // gather rectangles coordiantes, cycle though bsp_tree to gather 
             // each rectangle in order
             let mut room_vec = Vec::new();
             room_vec.push(bsp_tree.collect_rooms().iter().collect::<Vec<_>>());
+            for room in room_vec.iter()
             let starting_position = bsp_tree.find_first_room();
             let mut map = Map{tiles, visibility, width, height, starting_position};
             bsp_tree.traversal(&mut map);
