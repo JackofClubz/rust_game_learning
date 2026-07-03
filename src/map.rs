@@ -157,7 +157,7 @@ impl Map{
             // gather rectangles coordiantes, cycle though bsp_tree to gather 
             // each rectangle in order
             let mut room_vec = Vec::new();
-            room_vec.push(bsp_tree.collect_rooms().collect::<Vec<_>>());
+            room_vec.push(bsp_tree.collect_rooms().iter().collect::<Vec<_>>());
             let starting_position = bsp_tree.find_first_room();
             let mut map = Map{tiles, visibility, width, height, starting_position};
             bsp_tree.traversal(&mut map);
