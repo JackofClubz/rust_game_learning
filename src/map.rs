@@ -154,7 +154,6 @@ impl Map{
             let mut visibility = vec![Visibility::Unseen; (width * height) as usize];
             let root_region = Rectangle::new(0, 0, width, height);
             let bsp_tree = BSPNode::build(root_region,6,4);
-            let rng = rand::thread_rng();
 
             // gather rectangles coordiantes, cycle though bsp_tree to gather 
             // each rectangle in order
