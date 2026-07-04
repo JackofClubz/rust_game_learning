@@ -28,10 +28,15 @@ impl State {
     pub fn new() -> Self {
         let map = Map::new(80, 50);
         let starting_position = map.starting_position;
+        let rooms = map.rooms.clone();
         State {
             player: Player::new(starting_position),
             map,
-            enemies: vec![Enemy::new(Position { x: 45, y: 25 })],
+            // enemies only exist in 2 random rooms, not the starting room
+            enemies: rooms.iter().skip(1)
+                .take(2)
+                .map(|room| Enemy::new(Position { x: room.x + room.width / 2, y: room.y + room.height / 2 }))
+                .collect(),
         }
     }
 }
