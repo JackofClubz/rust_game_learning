@@ -22,6 +22,12 @@ pub struct Map{
     pub rooms: Vec<Rectangle>,
 }
 
+#[derive(Clone, PartialEq)]
+pub struct DijkstraMap{
+    pub distance: Vec<i32>,
+    pub width: i32,
+}
+
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
 pub struct Position{
     pub x: i32,
