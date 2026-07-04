@@ -19,6 +19,7 @@ pub struct Map{
     pub width: i32,
     pub height: i32,
     pub starting_position: Position,
+    pub rooms: Vec<Rectangle>,
 }
 
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
@@ -157,11 +158,9 @@ impl Map{
 
             // gather rectangles coordiantes, cycle though bsp_tree to gather 
             // each rectangle in order
-            let mut room_vec = Vec::new();
-            room_vec.push(bsp_tree.collect_rooms().iter().collect::<Vec<_>>());
-            for room in room_vec.iter()
+            let room_vec = bsp_tree.collect_rooms();
             let starting_position = bsp_tree.find_first_room();
-            let mut map = Map{tiles, visibility, width, height, starting_position};
+            let mut map = Map{tiles, visibility, width, height, starting_position, rooms: room_vec};
             bsp_tree.traversal(&mut map);
             return map;
         }
