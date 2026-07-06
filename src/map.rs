@@ -210,20 +210,49 @@ impl Map{
 
 impl DijkstraMap{
     pub fn new(map:&Map, player: Position) -> Self{
-        let mut distances = Vec::new();
-        for y in 0..map.height{
-            for x in 0..map.width{
-                if map.can_enter(x, y){
-                    distances.push(None);
-                }else{
-                    distances.push(Some(i32::MAX));
+        let mut distances = vec![None; (map.width * map.height) as usize];
+        
+        let player_distance = 0;
+        let mut distance_queue = VecDeque::new();
+        distance_queue.push_front(player_distance);
+        while !distance_queue.is_empty(){
+            let current_distance = distance_queue.pop_front().unwrap();
+            for y in 0..map.height{
+                for x in 0..map.width{
+                    let idx = map.idx(x, y);
+                    if distances[idx].is_some(){
+                        continue;
+                    }
+                    if map.tiles[idx] == TileType::Wall{
+                        continue;
+                    }
+                    // check if any of the neighbors have the current distance
+                    let mut has_neighbor_with_distance = false;
+                    for dy in -1..=1{
+                        for dx in -1..=1{
+                            if dx == 0 && dy == 0{
+                                continue;
+                            }
+                            let neighbor_x = x + dx;
+                            let neighbor_y = y + dy;
+                            if !map.in_bounds(neighbor_x, neighbor_y){
+                                continue;
+                            }
+                            let neighbor_idx = map.idx(neighbor_x, neighbor_y);
+                            if distances[neighbor_idx] == Some(current_distance){
+                                has_neighbor_with_distance = true;
+                                break;
+                            }
+                        }
+                        if has_neighbor_with_distance{
+                            break;
+                        }
+                    }
+                    if has_neighbor_with_distance{
+                        distances[idx] = Some(current_distance + 1);
+                        distance_queue.push_back(current_distance + 1);
+                    }
                 }
-            }
-            let player_distance = 0;
-            let mut distance_queue = VecDeque::new();
-            distance_queue.push_front(player_distance);
-            while distance_queue != Empty{
-
             }
         }
     }
