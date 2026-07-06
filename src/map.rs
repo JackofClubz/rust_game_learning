@@ -6,7 +6,7 @@ We repeat this process until we have created a certain number of floor tiles.
 We also define a function to render the map to the console.
 */
 
-use std::ops::AddAssign;
+use std::{collections::VecDeque, num::IntErrorKind::Empty, ops::AddAssign};
 
 use rand::{Rng, random};
 use bracket_lib::{prelude::*, terminal::VirtualKeyCode::{M, V}};
@@ -213,13 +213,17 @@ impl DijkstraMap{
         let mut distances = Vec::new();
         for y in 0..map.height{
             for x in 0..map.width{
-                let idx = map.idx(x,y);
-                if map.tiles[idx] == TileType::Wall{
+                if map.can_enter(x, y){
                     distances.push(None);
                 }else{
-                    let distance = (player.x - x).abs() + (player.y - y).abs() -1;
-                    distances.push(Some(distance));
+                    distances.push(Some(i32::MAX));
                 }
+            }
+            let player_distance = 0;
+            let mut distance_queue = VecDeque::new();
+            distance_queue.push_front(player_distance);
+            while distance_queue != Empty{
+
             }
         }
     }
