@@ -9,7 +9,7 @@ We also define a function to render the map to the console.
 use std::ops::AddAssign;
 
 use rand::{Rng, random};
-use bracket_lib::{prelude::*, terminal::VirtualKeyCode::M};
+use bracket_lib::{prelude::*, terminal::VirtualKeyCode::{M, V}};
 
 
 #[derive(Clone, PartialEq)]
@@ -24,7 +24,7 @@ pub struct Map{
 
 #[derive(Clone, PartialEq)]
 pub struct DijkstraMap{
-    pub distance: Vec<i32>,
+    pub distance: Vec<Option<i32>>,
     pub width: i32,
 }
 
@@ -203,6 +203,23 @@ impl Map{
                     }
                 }
                 
+            }
+        }
+    }
+}
+
+impl DijkstraMap{
+    pub fn new(map:&Map, player: Position) -> Self{
+        let mut distances = Vec::new();
+        for y in 0..map.height{
+            for x in 0..map.width{
+                let idx = map.idx(x,y);
+                if map.tiles[idx] == TileType::Wall{
+                    distances.push(None);
+                }else{
+                    let distance = (player.x - x).abs() + (player.y - y).abs() -1;
+                    distances.push(Some(distance));
+                }
             }
         }
     }
