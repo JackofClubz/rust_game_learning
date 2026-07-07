@@ -215,6 +215,7 @@ impl DijkstraMap{
         // Start: player at distance 0
         let player_idx = map.idx(player.x, player.y);
         distances[player_idx] = Some(0);
+        let mut distance_queue = VecDeque::new();
         distance_queue.push_back(player);  // push POSITION not distance
 
         while let Some(current_pos) = distance_queue.pop_front() {
@@ -234,7 +235,7 @@ impl DijkstraMap{
                 distances[idx] = Some(current_dist + 1);
                 distance_queue.push_back(Position { x: nx, y: ny });
             }
-        }
+        }distance_queue.clear();
     }
 }
 
