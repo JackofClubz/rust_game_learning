@@ -323,7 +323,7 @@ impl BSPNode{
     pub fn find_first_room(&self) -> Position{
         match self{
             BSPNode::Leaf(region) => region.centre_point(),
-            BSPNode::Node{left, right} => {
+            BSPNode::Node{left,..} => {
                 left.find_first_room()
             }
         }
