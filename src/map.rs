@@ -233,13 +233,11 @@ impl DijkstraMap{
                 if distances[idx].is_some() { continue; }  // already visited
                 
                 distances[idx] = Some(current_dist + 1);
-                distance_queue.push_back(Position { x: nx, y: ny });#
-
-                
+                distance_queue.push_back(Position { x: nx, y: ny });
             }
         }
-    }//return DijkstraMap
-    
+        return DijkstraMap { distance: distances, width: map.width };
+    }
 }
 
 impl Rectangle{
