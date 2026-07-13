@@ -3,7 +3,7 @@ mod map;
 mod player;
 mod enemy;
 
-use map::{Map, Position};
+use map::{Map, Position, DijkstraMap};
 use player::{Player, PlayerAction, handle_input};
 
 use crate::enemy::Enemy;
@@ -56,7 +56,24 @@ impl GameState for State{
                     let dijkstra = DijkstraMap::new(&self.map, self.player.position);
 
                     for enemy in self.enemies.iter_mut() {
-                        
+                        //check all neighbor tiles
+                        let enemy_idx = idx(enemy.position.x, enemy.position.y);
+                        for (dx, dy) in [(-1, 0), (1,0), (0,-1), (0,1)].iter(){
+                            let nx = enemy.position.x + dx;
+                            let ny = enemy.position.y + dy;
+                            if self.map.can_enter(nx, ny){
+                                let neighbor_idx = idx(nx,ny);
+                                if dijkstra.distance[neighbor_idx] < dijkstra.distance[enemy_idx]{
+                                    enemy.position.x = nx;
+                                    enemy.position.y = ny;
+                                    break;
+                                }else{
+                                    // Enemy is already at the closest position to the player, so it waits
+                                    PlayerAction::Wait;
+                                }
+                        }
+
+
                         
                     }
                 }
