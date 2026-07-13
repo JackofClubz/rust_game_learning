@@ -72,14 +72,9 @@ impl GameState for State{
                                         }
                                     }
                                 }
-                                }else{
-                                    // Enemy is already at the closest position to the player, so it waits
-                                    PlayerAction::Wait;
-                                }
+                            }
                         }
-
-
-                        
+                    
                     }
                 }
                 PlayerAction::Wait => {},
@@ -90,5 +85,8 @@ impl GameState for State{
         // Render the map and player
         self.map.render(ctx);
         self.player.render(ctx);
+        for enemy in self.enemies.iter(){
+            enemy.render(ctx);
+        }
     }
 }
