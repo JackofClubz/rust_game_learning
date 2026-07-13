@@ -1,4 +1,4 @@
-use bracket_lib::prelude::*;
+use bracket_lib::{prelude::*, terminal::VirtualKeyCode::D};
 mod map;
 mod player;
 mod enemy;
@@ -52,6 +52,12 @@ impl GameState for State{
                     if self.map.can_enter(new_x, new_y){
                         self.player.position.x = new_x;
                         self.player.position.y = new_y; 
+                    }
+                    let dijkstra = DijkstraMap::new(&self.map, self.player.position);
+
+                    for enemy in self.enemies.iter_mut() {
+                        
+                        
                     }
                 }
                 PlayerAction::Wait => {},
