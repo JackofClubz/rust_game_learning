@@ -57,16 +57,21 @@ impl GameState for State{
 
                     for enemy in self.enemies.iter_mut() {
                         //check all neighbor tiles
-                        let enemy_idx = idx(enemy.position.x, enemy.position.y);
-                        for (dx, dy) in [(-1, 0), (1,0), (0,-1), (0,1)].iter(){
-                            let nx = enemy.position.x + dx;
-                            let ny = enemy.position.y + dy;
+                        let enemy_idx = (enemy.position.y * dijkstra.width + enemy.position.x) as usize;
+                        for (ex, ey) in [(-1, 0), (1,0), (0,-1), (0,1)].iter(){
+                            let nx = enemy.position.x + ex;
+                            let ny = enemy.position.y + ey;
                             if self.map.can_enter(nx, ny){
-                                let neighbor_idx = idx(nx,ny);
-                                if dijkstra.distance[neighbor_idx] < dijkstra.distance[enemy_idx]{
-                                    enemy.position.x = nx;
-                                    enemy.position.y = ny;
-                                    break;
+                                let neighbor_idx = (ny * dijkstra.width + nx) as usize;
+                                if let Some(nd) = dijkstra.distance[neighbor_idx] {
+                                    if let Some(ed) = dijkstra.distance[enemy_idx] {
+                                        if nd < ed {
+                                            enemy.position.x = nx;
+                                            enemy.position.y = ny;
+                                            break;
+                                        }
+                                    }
+                                }
                                 }else{
                                     // Enemy is already at the closest position to the player, so it waits
                                     PlayerAction::Wait;
