@@ -139,6 +139,34 @@ pub fn update_fov(position: Position, radius: i32, map: &mut Map){
     }
 }
 
+//L line corridor between two rooms
+pub fn carve_corridor(map: &mut Map, room1: &Rectangle, room2: &Rectangle){
+    let center1 = room1.centre_point();
+    let center2 = room2.centre_point();
+
+    if random() {
+        // horizontal then vertical
+        for x in center1.x.min(center2.x)..=center1.x.max(center2.x) {
+            let idx = map.idx(x, center1.y);
+            map.tiles[idx] = TileType::Floor;
+        }
+        for y in center1.y.min(center2.y)..=center1.y.max(center2.y) {
+            let idx = map.idx(center2.x, y);
+            map.tiles[idx] = TileType::Floor;
+        }
+    } else {
+        // vertical then horizontal
+        for y in center1.y.min(center2.y)..=center1.y.max(center2.y) {
+            let idx = map.idx(center1.x, y);
+            map.tiles[idx] = TileType::Floor;
+        }
+        for x in center1.x.min(center2.x)..=center1.x.max(center2.x) {
+            let idx = map.idx(x, center2.y);
+            map.tiles[idx] = TileType::Floor;
+        }
+    }
+}
+
 //check in_bounds first → then call idx → then index the Vec
 impl Map{
     // calculate the index of a tile in the tiles vector based on its x and y coordinates
@@ -167,6 +195,7 @@ impl Map{
             let starting_position = bsp_tree.find_first_room();
             let mut map = Map{tiles, visibility, width, height, starting_position, rooms: room_vec};
             bsp_tree.traversal(&mut map);
+            BSPNode::carve_corridors(&mut map, &bsp_tree);
             return map;
         }
 
@@ -265,6 +294,19 @@ impl Rectangle{
 }
 
 impl BSPNode{
+    pub fn carve_corridors(map: &mut Map, node: &BSPNode){
+        match node{
+            BSPNode::Leaf(_) => {},
+            BSPNode::Node{left, right} => {
+                let left_room = left.find_first_room();
+                let right_room = right.find_first_room();
+                carve_corridor(map, &Rectangle::new(left_room.x, left_room.y, 1, 1), &Rectangle::new(right_room.x, right_room.y, 1, 1));
+                BSPNode::carve_corridors(map, left);
+                BSPNode::carve_corridors(map, right);
+            }
+        }
+    }
+
     pub fn build(region:Rectangle, min_width:i32, min_height:i32) -> Self{
         if region.is_too_small(min_width, min_height){
             return BSPNode::Leaf(region)
