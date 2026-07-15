@@ -8,6 +8,7 @@ use bracket_lib::prelude::*;
 use crate::map::{Position, Map};
 
 pub struct Player{
+    pub entity: u32,
     pub position:Position,
     pub glyph: char,
     pub radius: i32,
@@ -22,6 +23,7 @@ pub enum PlayerAction{
 impl Player{
     pub fn new(position: Position)-> Self{
         Player{
+            entity: 0,
             position,
             glyph: '@',
             radius: 8,

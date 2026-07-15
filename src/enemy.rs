@@ -9,6 +9,7 @@ use crate::map::{Position, Map};
 
 
 pub struct Enemy{
+    pub entity: u32,
     pub position:Position,
     pub glyph: char,
     pub radius: i32,
@@ -24,6 +25,7 @@ pub enum EnemyAction{
 impl Enemy{
     pub fn new(position: Position)-> Self{
         Enemy{
+            entity: 1,
             position,
             glyph: 'E',
             radius: 8,
