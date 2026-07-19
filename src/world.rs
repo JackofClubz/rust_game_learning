@@ -1,4 +1,5 @@
 use std::collections::{HashMap, HashSet};
+use crate::map::Position;
 
 pub struct World {
     pub next_entity: u32,
@@ -21,7 +22,7 @@ impl World {
         }
     }
 
-    pub fn create_player(&mut self, position: Position, health: Health, glyph: char) -> u32 {
+    pub fn spawn_player(&mut self, position: Position, health: Health, glyph: char) -> u32 {
         let entity = self.next_entity;
         self.next_entity += 1;
 
@@ -33,7 +34,7 @@ impl World {
         entity
     }
 
-    pub fn create_enemy(&mut self, position: Position, health: Health, glyph: char) -> u32 {
+    pub fn spawn_enemy(&mut self, position: Position, health: Health, glyph: char) -> u32 {
         let entity = self.next_entity;
         self.next_entity += 1;
 

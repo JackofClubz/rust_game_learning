@@ -2,6 +2,7 @@ use bracket_lib::{prelude::*, terminal::VirtualKeyCode::D};
 mod map;
 mod player;
 mod enemy;
+mod world;
 
 use map::{Map, Position, DijkstraMap};
 use player::{Player, PlayerAction, handle_input};
@@ -29,6 +30,7 @@ impl State {
         let map = Map::new(80, 50);
         let starting_position = map.starting_position;
         let rooms = map.rooms.clone();
+        let world = world::World::new();
         State {
             player: Player::new(starting_position),
             map,
