@@ -12,6 +12,7 @@ pub struct Player{
     pub position:Position,
     pub glyph: char,
     pub radius: i32,
+    pub health: i32,
 }
 
 pub enum PlayerAction{
@@ -27,6 +28,7 @@ impl Player{
             position,
             glyph: '@',
             radius: 8,
+            health: 100,
         }
     }
 

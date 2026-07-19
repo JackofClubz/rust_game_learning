@@ -1,6 +1,11 @@
 use std::collections::{HashMap, HashSet};
 use crate::map::Position;
 
+pub struct Health {
+    pub current: i32,
+    pub max: i32,
+}
+
 pub struct World {
     pub next_entity: u32,
     pub positions:   HashMap<u32, Position>,

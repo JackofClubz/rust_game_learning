@@ -13,6 +13,7 @@ pub struct Enemy{
     pub position:Position,
     pub glyph: char,
     pub radius: i32,
+    pub health: i32,
 }
 
 
@@ -29,6 +30,7 @@ impl Enemy{
             position,
             glyph: 'E',
             radius: 8,
+            health: 50,
         }
     }
 
