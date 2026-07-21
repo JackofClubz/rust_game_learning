@@ -27,27 +27,7 @@ impl World {
         }
     }
 
-    pub fn spawn_player(&mut self, position: Position, health: Health, glyph: char) -> u32 {
-        let entity = self.next_entity;
-        self.next_entity += 1;
+    pub fn spawn_player
 
-        self.positions.insert(entity, position);
-        self.health.insert(entity, health);
-        self.glyphs.insert(entity, glyph);
-        self.players.insert(entity);
-
-        entity
-    }
-
-    pub fn spawn_enemy(&mut self, position: Position, health: Health, glyph: char) -> u32 {
-        let entity = self.next_entity;
-        self.next_entity += 1;
-
-        self.positions.insert(entity, position);
-        self.health.insert(entity, health);
-        self.glyphs.insert(entity, glyph);
-        self.enemies.insert(entity);
-
-        entity
-    }
+    pub fn spawn_enemy
 }
