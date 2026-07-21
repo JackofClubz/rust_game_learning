@@ -34,11 +34,22 @@ impl World {
         self.next_entity += 1;
 
         self.positions.insert(entity, position);
-        self.glyphs.insert(entity, "@");
-        self.health.insert(entity, 10);
-        
-
+        self.glyphs.insert(entity, '@');
+        self.health.insert(entity, Health{current: 10, max:10});
+        self.players.insert(entity);
+        entity
     }
 
-    pub fn spawn_enemy
+    pub fn spawn_enemy(&mut self, position:Position) -> u32{
+        let entity = self.next_entity;
+
+        //increment for next time
+        self.next_entity += 1;
+
+        self.positions.insert(entity, position);
+        self.glyphs.insert(entity, 'E');
+        self.health.insert(entity, Health{current: 10, max:10});
+        self.enemies.insert(entity);
+        entity
+    }
 }
