@@ -6,6 +6,7 @@ mod world;
 
 use map::{Map, Position, DijkstraMap};
 use player::{Player, PlayerAction, handle_input};
+use world::World;
 
 use crate::enemy::Enemy;
 
@@ -20,9 +21,8 @@ fn main () {
 }
 
 pub struct State{
-    player: Player,
+    world: World,
     map: Map,
-    enemies: Vec<Enemy>, 
 }
 
 impl State {
@@ -30,16 +30,20 @@ impl State {
         let map = Map::new(80, 50);
         let starting_position = map.starting_position;
         let rooms = map.rooms.clone();
-        let world = world::World::new();
-        State {
-            player: Player::new(starting_position),
-            map,
-            // enemies only exist in 2 random rooms, not the starting room
-            enemies: rooms.iter().skip(1)
-                .take(2)
-                .map(|room| Enemy::new(Position { x: room.x + room.width / 2, y: room.y + room.height / 2 }))
-                .collect(),
-        }
+        let mut world = World::new();
+
+         // spawn player at starting position
+        world.spawn_player(map.starting_position);
+        
+        // spawn enemies in other rooms
+        map.rooms.iter()
+            .skip(1)
+            .take(2)
+            .for_each(|room| {
+                world.spawn_enemy(room.centre_point());
+            });
+        
+        State { world, map }
     }
 }
 
