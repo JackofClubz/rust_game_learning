@@ -27,7 +27,18 @@ impl World {
         }
     }
 
-    pub fn spawn_player
+    pub fn spawn_player(&mut self, position:Position) -> u32{
+        let entity = self.next_entity;
+
+        //increment for next time
+        self.next_entity += 1;
+
+        self.positions.insert(entity, position);
+        self.glyphs.insert(entity, "@");
+        self.health.insert(entity, 10);
+        
+
+    }
 
     pub fn spawn_enemy
 }
