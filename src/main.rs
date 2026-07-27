@@ -53,12 +53,12 @@ impl GameState for State{
         if let Some(action) = handle_input(ctx){
             match action{
                 PlayerAction::Move(dx, dy) => {
-                    let new_x = self.world.positions[&self.world.players.iter().next().unwrap()].x + dx;
-                    let new_y = self.world.positions[&self.world.players.iter().next().unwrap()].y + dy;
+                    let new_x = self.world.player_position().x + dx;
+                    let new_y = self.world.player_position().y + dy;
                     if self.map.can_enter(new_x, new_y){
-                        self.world.positions.insert(*self.world.players.iter().next().unwrap(), Position { x: new_x, y: new_y });
+                        self.world.positions.insert(self.world.player_id(), Position { x: new_x, y: new_y });
                     }
-                    let dijkstra = DijkstraMap::new(&self.map, self.world.positions[&self.world.players.iter().next().unwrap()]);
+                    let dijkstra = DijkstraMap::new(&self.map, self.world.player_position());
 
                     for enemy in self.world.enemies.iter() {
                         //check all neighbor tiles

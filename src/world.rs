@@ -52,4 +52,19 @@ impl World {
         self.enemies.insert(entity);
         entity
     }
+
+    pub fn player_id(&self) -> u32{
+        *self.players.iter().next().unwrap()
+    }
+
+    pub fn player_position(&self) -> Position{
+        let id = self.player_id();
+        *self.positions.get(&id).unwrap()
+    }
+
+    pub fn enemy_ids(&self) -> Vec<u32>{
+        self.enemies.iter().cloned().collect()
+    }
+
+    
 }
