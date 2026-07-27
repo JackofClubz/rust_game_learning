@@ -66,5 +66,10 @@ impl World {
         self.enemies.iter().cloned().collect()
     }
 
+    pub fn enemy_positions(&self) -> Vec<Position>{
+        let ids = self.enemy_ids();
+        ids.iter().map(|id| *self.positions.get(id).unwrap()).collect()
+    }
+
     
 }

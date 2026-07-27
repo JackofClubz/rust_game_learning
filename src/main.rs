@@ -60,27 +60,46 @@ impl GameState for State{
                     }
                     let dijkstra = DijkstraMap::new(&self.map, self.world.player_position());
 
-                    for enemy in self.world.enemies.iter() {
-                        //check all neighbor tiles
-                        let enemy_idx = (enemy.position.y * dijkstra.width + enemy.position.x) as usize;
+                    for enemy_id in self.world.enemies.iter(){
+                        let enemy_position = self.world.positions.get(enemy_id).unwrap();
+                        let enemy_idx = (enemy_position.y * dijkstra.width + enemy_position.x) as usize;
                         for (ex, ey) in [(-1, 0), (1,0), (0,-1), (0,1)].iter(){
-                            let nx = enemy.position.x + ex;
-                            let ny = enemy.position.y + ey;
+                            let nx = enemy_position.x + ex;
+                            let ny = enemy_position.y + ey;
                             if self.map.can_enter(nx, ny){
                                 let neighbor_idx = (ny * dijkstra.width + nx) as usize;
                                 if let Some(nd) = dijkstra.distance[neighbor_idx] {
                                     if let Some(ed) = dijkstra.distance[enemy_idx] {
                                         if nd < ed {
-                                            enemy.position.x = nx;
-                                            enemy.position.y = ny;
+                                            self.world.positions.insert(*enemy_id, Position { x: nx, y: ny });
                                             break;
                                         }
                                     }
                                 }
                             }
                         }
-                    
                     }
+                    // for enemy in self.world.enemies.iter() {
+                    //     //check all neighbor tiles
+                    //     let enemy_idx = (enemy.position.y * dijkstra.width + enemy.position.x) as usize;
+                    //     for (ex, ey) in [(-1, 0), (1,0), (0,-1), (0,1)].iter(){
+                    //         let nx = enemy.position.x + ex;
+                    //         let ny = enemy.position.y + ey;
+                    //         if self.map.can_enter(nx, ny){
+                    //             let neighbor_idx = (ny * dijkstra.width + nx) as usize;
+                    //             if let Some(nd) = dijkstra.distance[neighbor_idx] {
+                    //                 if let Some(ed) = dijkstra.distance[enemy_idx] {
+                    //                     if nd < ed {
+                    //                         enemy.position.x = nx;
+                    //                         enemy.position.y = ny;
+                    //                         break;
+                    //                     }
+                    //                 }
+                    //             }
+                    //         }
+                    //     }
+                    
+                    // }
                 }
                 PlayerAction::Wait => {},
                 PlayerAction::Quit => ctx.quit(),
