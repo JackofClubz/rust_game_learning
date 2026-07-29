@@ -104,13 +104,24 @@ impl GameState for State{
                 PlayerAction::Wait => {},
                 PlayerAction::Quit => ctx.quit(),
             }
-            map::update_fov(self.player.position, 3, &mut self.map);
+            map::update_fov(self.world.player_position(), 3, &mut self.map);
         }
         // Render the map and player
         self.map.render(ctx);
-        self.player.render(ctx);
-        for enemy in self.enemies.iter(){
-            enemy.render(ctx);
+        for (id, position) in self.world.positions.iter(){
+            if let Some(glyph) = self.world.glyphs.get(id){
+                let colour = if self.world.players.contains(id){
+                    YELLOW
+                } else{
+                    RED
+                };
+                ctx.set(position.x, position.y, colour, BLACK, to_cp437(*glyph));
+            }
+
         }
+        // self.player.render(ctx);
+        // for enemy in self.enemies.iter(){
+        //     enemy.render(ctx);
+        // }
     }
 }
