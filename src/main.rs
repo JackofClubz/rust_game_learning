@@ -58,7 +58,7 @@ impl GameState for State{
                     for enemy_id in self.world.enemies.iter(){
                         let enemy_position = *self.world.positions.get(enemy_id).unwrap();
                         let enemy_idx = (enemy_position.y * dijkstra.width + enemy_position.x) as usize;
-                        for (ex, ey) in [(-1, 0), (1,0), (0,-1), (0,1)].iter(){
+                        for (ex, ey) in [(-1, 0), (1,0), (0,-1), (0,1)]{
                             let nx = enemy_position.x + ex;
                             let ny = enemy_position.y + ey;
                             if self.map.can_enter(nx, ny){
