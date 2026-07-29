@@ -1,15 +1,12 @@
-use bracket_lib::{prelude::*, terminal::VirtualKeyCode::D};
+use bracket_lib::{prelude::*};
 mod map;
 mod player;
 mod enemy;
 mod world;
 
 use map::{Map, Position, DijkstraMap};
-use player::{Player, PlayerAction, handle_input};
+use player::{PlayerAction, handle_input};
 use world::World;
-
-use crate::enemy::Enemy;
-
 
 fn main () {
     let context = BTermBuilder::simple80x50()
@@ -28,8 +25,6 @@ pub struct State{
 impl State {
     pub fn new() -> Self {
         let map = Map::new(80, 50);
-        let starting_position = map.starting_position;
-        let rooms = map.rooms.clone();
         let mut world = World::new();
 
          // spawn player at starting position
@@ -61,7 +56,7 @@ impl GameState for State{
                     let dijkstra = DijkstraMap::new(&self.map, self.world.player_position());
 
                     for enemy_id in self.world.enemies.iter(){
-                        let enemy_position = self.world.positions.get(enemy_id).unwrap();
+                        let enemy_position = *self.world.positions.get(enemy_id).unwrap();
                         let enemy_idx = (enemy_position.y * dijkstra.width + enemy_position.x) as usize;
                         for (ex, ey) in [(-1, 0), (1,0), (0,-1), (0,1)].iter(){
                             let nx = enemy_position.x + ex;
