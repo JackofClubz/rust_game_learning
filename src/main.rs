@@ -79,27 +79,6 @@ impl GameState for State{
                             }
                         }
                     }
-                    // for enemy in self.world.enemies.iter() {
-                    //     //check all neighbor tiles
-                    //     let enemy_idx = (enemy.position.y * dijkstra.width + enemy.position.x) as usize;
-                    //     for (ex, ey) in [(-1, 0), (1,0), (0,-1), (0,1)].iter(){
-                    //         let nx = enemy.position.x + ex;
-                    //         let ny = enemy.position.y + ey;
-                    //         if self.map.can_enter(nx, ny){
-                    //             let neighbor_idx = (ny * dijkstra.width + nx) as usize;
-                    //             if let Some(nd) = dijkstra.distance[neighbor_idx] {
-                    //                 if let Some(ed) = dijkstra.distance[enemy_idx] {
-                    //                     if nd < ed {
-                    //                         enemy.position.x = nx;
-                    //                         enemy.position.y = ny;
-                    //                         break;
-                    //                     }
-                    //                 }
-                    //             }
-                    //         }
-                    //     }
-                    
-                    // }
                 }
                 PlayerAction::Wait => {},
                 PlayerAction::Quit => ctx.quit(),
@@ -119,9 +98,5 @@ impl GameState for State{
             }
 
         }
-        // self.player.render(ctx);
-        // for enemy in self.enemies.iter(){
-        //     enemy.render(ctx);
-        // }
     }
 }
