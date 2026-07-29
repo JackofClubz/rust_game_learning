@@ -108,22 +108,9 @@ impl GameState for State{
         }
         // Render the map and player
         self.map.render(ctx);
-        // Render all entities
-        for (entity_id, position) in self.world.positions.iter() {
-            // look up this entity's glyph
-            if let Some(glyph) = self.world.glyphs.get(entity_id) {
-                // decide colour based on whether it's player or enemy
-                let colour = if self.world.players.contains(entity_id) {
-                    YELLOW
-                } else {
-                    RED
-                };
-                ctx.set(position.x, position.y, colour, BLACK, to_cp437(*glyph));
-            }
+        self.player.render(ctx);
+        for enemy in self.enemies.iter(){
+            enemy.render(ctx);
         }
-        // self.player.render(ctx);
-        // for enemy in self.enemies.iter(){
-        //     enemy.render(ctx);
-        // }
     }
 }
