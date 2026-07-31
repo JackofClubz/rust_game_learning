@@ -50,7 +50,7 @@ impl GameState for State{
                 PlayerAction::Move(dx, dy) => {
                     let new_x = self.world.player_position().x + dx;
                     let new_y = self.world.player_position().y + dy;
-                    if self.map.can_enter(new_x, new_y){
+                    if self.map.can_enter(new_x, new_y) && self.world.enemy_at(new_x, new_y).is_none(){
                         self.world.positions.insert(self.world.player_id(), Position { x: new_x, y: new_y });
                     }
                     let dijkstra = DijkstraMap::new(&self.map, self.world.player_position());
@@ -61,7 +61,7 @@ impl GameState for State{
                         for (ex, ey) in [(-1, 0), (1,0), (0,-1), (0,1)]{
                             let nx = enemy_position.x + ex;
                             let ny = enemy_position.y + ey;
-                            if self.map.can_enter(nx, ny){
+                            if self.map.can_enter(nx, ny) && self.world.enemy_at(nx, ny).is_none(){
                                 let neighbor_idx = (ny * dijkstra.width + nx) as usize;
                                 if let Some(nd) = dijkstra.distance[neighbor_idx] {
                                     if let Some(ed) = dijkstra.distance[enemy_idx] {

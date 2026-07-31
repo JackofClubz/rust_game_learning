@@ -79,7 +79,7 @@ impl World {
                 }
             }
         }
-        None  // only reached if no enemy found
+        None  
     }
 
     
