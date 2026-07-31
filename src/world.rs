@@ -71,5 +71,16 @@ impl World {
         ids.iter().map(|id| *self.positions.get(id).unwrap()).collect()
     }
 
+    pub fn enemy_at(&self, x: i32, y: i32) -> Option<u32> {
+        for &enemy_id in self.enemies.iter() {
+            if let Some(pos) = self.positions.get(&enemy_id) {
+                if pos.x == x && pos.y == y {
+                    return Some(enemy_id);
+                }
+            }
+        }
+        None  // only reached if no enemy found
+    }
+
     
 }
