@@ -50,8 +50,20 @@ impl GameState for State{
                 PlayerAction::Move(dx, dy) => {
                     let new_x = self.world.player_position().x + dx;
                     let new_y = self.world.player_position().y + dy;
-                    if self.map.can_enter(new_x, new_y) && self.world.enemy_at(new_x, new_y).is_none(){
-                        self.world.positions.insert(self.world.player_id(), Position { x: new_x, y: new_y });
+                    if self.map.can_enter(new_x, new_y){
+                        if let Some(enemy_id) = self.world.enemy_at(new_x, new_y) {
+                            // attack the enemy
+                            if let Some(health) = self.world.health.get_mut(&enemy_id) {
+                                health.current -= 1;
+                                if health.current <= 0 {
+                                    // enemy dies — remove all its components
+                                    self.world.positions.remove(&enemy_id);
+                                    self.world.glyphs.remove(&enemy_id);
+                                    self.world.health.remove(&enemy_id);
+                                    self.world.enemies.remove(&enemy_id);
+                                }
+                            }
+                        }
                     }
                     let dijkstra = DijkstraMap::new(&self.map, self.world.player_position());
 
