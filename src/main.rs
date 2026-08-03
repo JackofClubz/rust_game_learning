@@ -64,6 +64,12 @@ impl GameState for State{
                                 }
                             }
                         }
+                    }else{
+                        // empty tile — move player
+                        self.world.positions.insert(
+                            self.world.player_id(),
+                            Position { x: new_x, y: new_y }
+                        );
                     }
                     let dijkstra = DijkstraMap::new(&self.map, self.world.player_position());
 
