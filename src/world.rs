@@ -71,11 +71,11 @@ impl World {
         ids.iter().map(|id| *self.positions.get(id).unwrap()).collect()
     }
 
-    pub fn enemy_at(&self, x: i32, y: i32) -> Option<u32> {
-        for &enemy_id in self.enemies.iter() {
-            if let Some(pos) = self.positions.get(&enemy_id) {
+    pub fn occupied_tile(&self, x: i32, y: i32) -> Option<u32> {
+        for &entity_id in self.positions.keys() {
+            if let Some(pos) = self.positions.get(&entity_id) {
                 if pos.x == x && pos.y == y {
-                    return Some(enemy_id);
+                    return Some(entity_id);
                 }
             }
         }

@@ -51,16 +51,16 @@ impl GameState for State{
                     let new_x = self.world.player_position().x + dx;
                     let new_y = self.world.player_position().y + dy;
                     if self.map.can_enter(new_x, new_y){
-                        if let Some(enemy_id) = self.world.enemy_at(new_x, new_y) {
-                            // attack the enemy
-                            if let Some(health) = self.world.health.get_mut(&enemy_id) {
+                        if let Some(entity_id) = self.world.occupied_tile(new_x, new_y) {
+                            // attack the entity
+                            if let Some(health) = self.world.health.get_mut(&entity_id) {
                                 health.current -= 1;
                                 if health.current <= 0 {
-                                    // enemy dies — remove all its components
-                                    self.world.positions.remove(&enemy_id);
-                                    self.world.glyphs.remove(&enemy_id);
-                                    self.world.health.remove(&enemy_id);
-                                    self.world.enemies.remove(&enemy_id);
+                                    // entity dies — remove all its components
+                                    self.world.positions.remove(&entity_id);
+                                    self.world.glyphs.remove(&entity_id);
+                                    self.world.health.remove(&entity_id);
+                                    self.world.enemies.remove(&entity_id);
                                 }
                             }
                         }
@@ -73,7 +73,7 @@ impl GameState for State{
                         for (ex, ey) in [(-1, 0), (1,0), (0,-1), (0,1)]{
                             let nx = enemy_position.x + ex;
                             let ny = enemy_position.y + ey;
-                            if self.map.can_enter(nx, ny) && self.world.enemy_at(nx, ny).is_none(){
+                            if self.map.can_enter(nx, ny) && self.world.occupied_tile(nx, ny).is_none(){
                                 let neighbor_idx = (ny * dijkstra.width + nx) as usize;
                                 if let Some(nd) = dijkstra.distance[neighbor_idx] {
                                     if let Some(ed) = dijkstra.distance[enemy_idx] {
