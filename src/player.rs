@@ -51,3 +51,13 @@ pub fn handle_input(ctx:&BTerm) -> Option<PlayerAction>{
         
     }
 }
+
+pub fn update_player_position(player: &mut Player, dx: i32, dy: i32, map: &Map){
+    let new_x = player.position.x + dx;
+    let new_y = player.position.y + dy;
+
+    if map.can_enter(new_x, new_y){
+        player.position.x = new_x;
+        player.position.y = new_y;
+    }
+}

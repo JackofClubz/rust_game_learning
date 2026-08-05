@@ -82,5 +82,17 @@ impl World {
         None  
     }
 
+    pub fn is_enemy(&self, entity_id: u32) -> bool {
+        self.enemies.contains(&entity_id)
+    }
+
+    pub fn is_player(&self, entity_id: u32) -> bool {
+        self.players.contains(&entity_id)
+    }
+
+    pub fn is_occupied(&self, x: i32, y: i32) -> bool {
+        self.occupied_tile(x, y).is_some()
+    }
+
     
 }

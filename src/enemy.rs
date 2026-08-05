@@ -37,4 +37,14 @@ impl Enemy{
     pub fn render(&self, ctx: &mut BTerm){
         ctx.set(self.position.x, self.position.y, RED, BLACK, to_cp437(self.glyph))
     }
+
+    pub fn update_position(&mut self, dx: i32, dy: i32, map: &Map){
+        let new_x = self.position.x + dx;
+        let new_y = self.position.y + dy;
+
+        if map.can_enter(new_x, new_y){
+            self.position.x = new_x;
+            self.position.y = new_y;
+        }
+    }
 }
