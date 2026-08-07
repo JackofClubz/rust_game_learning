@@ -35,4 +35,12 @@ impl attack::AttackAction {
             damage,
         }
     }
+
+    pub fn execute(&self, world: &mut World, map: &Map) {
+        perform_attack(world, map, self.attacker_id, self.target_id, self.damage);
+    }
+
+    pub fn render(&self, ctx: &mut bracket_lib::prelude::BTerm, world: &World) {
+        attack_entity(ctx, world, self.attacker_id, self.target_id);
+    }
 }
