@@ -9,3 +9,30 @@ pub struct GameEngine {
     pub player: player::Player,
     pub enemies: Vec<enemy::Enemy>,
 }
+
+impl GameEngine {
+    pub fn new() -> Self {
+        GameEngine {
+            map: map::Map::new(),
+            player: player::Player::new(),
+            enemies: Vec::new(),
+        }
+    }
+
+    pub fn update(&mut self) {
+        // Update game logic here
+        self.player.update();
+        for enemy in &mut self.enemies {
+            enemy.update();
+        }
+    }
+
+    pub fn render(&self) {
+        // Render game state here
+        self.map.render();
+        self.player.render();
+        for enemy in &self.enemies {
+            enemy.render();
+        }
+    }
+}
