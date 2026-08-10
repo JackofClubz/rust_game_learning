@@ -7,7 +7,6 @@ mod world;
 use map::{Map, Position, DijkstraMap};
 use player::{PlayerAction, handle_input};
 use world::World;
-use attack;
 
 fn main () {
     let context = BTermBuilder::simple80x50()
@@ -56,7 +55,6 @@ impl GameState for State{
                             // attack the entity
                             if let Some(health) = self.world.health.get_mut(&entity_id) {
                                 health.current -= 1;
-                                attack::perform_attack(&mut self.world, &self.map, self.world.player_id(), entity_id, 1);
                                 if health.current <= 0 {
                                     // entity dies — remove all its components
                                     self.world.positions.remove(&entity_id);
