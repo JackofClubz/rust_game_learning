@@ -101,17 +101,17 @@ impl GameState for State{
             map::update_fov(self.world.player_position(), 3, &mut self.map);
         }
         // Render the map and player
-        self.map.render(ctx);
-        for (id, position) in self.world.positions.iter(){
-            if let Some(glyph) = self.world.glyphs.get(id){
-                let colour = if self.world.players.contains(id){
-                    YELLOW
-                } else{
-                    RED
-                };
-                ctx.set(position.x, position.y, colour, BLACK, to_cp437(*glyph));
+        //cuda render
+        ctx.cls();
+        for y in 0..self.map.height { 
+            
+            for x in 0..self.map.width {
+                let idx = (y * self.map.width + x) as usize;
+                let glyph = self.map.glyphs[idx];
+                let fg = self.map.fg_colors[idx];
+                let bg = self.map.bg_colors[idx];
+                ctx.set(x, y, fg, bg, glyph);
             }
-
         }
     }
 }

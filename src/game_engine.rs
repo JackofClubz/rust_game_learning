@@ -35,4 +35,14 @@ impl GameEngine {
             enemy.render();
         }
     }
+
+    pub fn add_enemy(&mut self, enemy: enemy::Enemy) {
+        self.enemies.push(enemy);
+    }
+    pub unity_engine(&mut self) {
+        // Unity engine specific logic here
+        let mut unity_engine = UnityEngine::new();
+        unity_engine.initialize();
+        render();
+    }
 }

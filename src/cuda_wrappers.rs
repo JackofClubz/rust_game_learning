@@ -36,3 +36,32 @@ impl<T> CudaBuffer<T> {
         self.size
     }
 }
+
+pub fn copy_to_device<T>(host_data: &[T], device_buffer: &mut CudaBuffer<T>) {
+    unsafe {
+        cudaMemcpy(
+            device_buffer.as_ptr() as *mut std::ffi::c_void,
+            host_data.as_ptr() as *const std::ffi::c_void,
+            host_data.len() * std::mem::size_of::<T>(),
+            cudaMemcpyKind::HostToDevice,
+        );
+    }
+}
+
+//memory coalescing and shared memory optimization can be implemented in the CUDA kernels themselves, which are not shown here. The above wrappers provide a convenient way to allocate and manage device memory from Rust code.
+pub fn copy_from_device<T>(device_buffer: &CudaBuffer<T>, host_data: &mut [T]) {
+    unsafe {
+        cudaMemcpy(
+            host_data.as_mut_ptr() as *mut std::ffi::c_void,
+            device_buffer.as_ptr() as *const std::ffi::c_void,
+            host_data.len() * std::mem::size_of::<T>(),
+            cudaMemcpyKind::DeviceToHost,
+        );
+    }
+}
+
+impl<T> Drop for CudaBuffer<T> {
+    fn drop(&mut self) {
+        cuda_free(self.ptr);
+    }
+}
