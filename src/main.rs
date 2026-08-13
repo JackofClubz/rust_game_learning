@@ -104,6 +104,16 @@ impl GameState for State{
         //cuda render
         ctx.cls();
         for y in 0..self.map.height { 
+            //cuda render
+            for instance in self.world.glyphs.iter(){
+                let entity_id = instance.0;
+                let glyph = instance.1;
+                if let Some(position) = self.world.positions.get(entity_id){
+                    if self.map.is_visible(position.x, position.y){
+                        ctx.set(position.x, position.y, glyph.fg, glyph.bg, glyph.glyph);
+                    }
+                }
+            }
             
             for x in 0..self.map.width {
                 let idx = (y * self.map.width + x) as usize;
