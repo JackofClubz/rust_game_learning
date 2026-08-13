@@ -2,6 +2,9 @@
 
 import { cudaMalloc, cudaMemcpy, cudaFree } from 'cuda';
 use std::ptr;
+use std::collections::HashMap;
+
+import { CudaBuffer, cuda_malloc, cuda_free, copy_to_device, copy_from_device } from './cuda_wrappers';
 
 pub fn cuda_malloc<T>(size: usize) -> *mut T {
     let mut ptr: *mut T = ptr::null_mut();
