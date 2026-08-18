@@ -3,6 +3,9 @@
 import { cudaMalloc, cudaMemcpy, cudaFree } from 'cuda';
 use std::ptr;
 use std::collections::HashMap;
+use std::ffi::c_void;
+// emotes
+import { perform_attack } from './attack_emotes';
 
 import { CudaBuffer, cuda_malloc, cuda_free, copy_to_device, copy_from_device } from './cuda_wrappers';
 
@@ -29,6 +32,17 @@ impl<T> CudaBuffer<T> {
     pub fn new(size: usize) -> Self {
         let ptr = cuda_malloc::<T>(size);
         CudaBuffer { ptr, size }
+    }
+
+    //cuda emotes and memory management functions can be added here as needed
+    pub fn from_host_data(host_data: &[T]) -> Self {
+        let mut buffer = CudaBuffer::new(host_data.len());
+        copy_to_device(host_data, &mut buffer);
+        buffer
+    }
+    
+    pub fn to_host_data(&self, host_data: &mut [T]) {
+        copy_from_device(self, host_data);
     }
 
     pub fn as_ptr(&self) -> *mut T {

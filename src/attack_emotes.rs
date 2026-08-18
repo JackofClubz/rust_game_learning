@@ -21,3 +21,17 @@ pub fn perform_attack(world: &mut World, map: &Map, attacker_id: u32, target_id:
         }
     }
 }
+
+impl AttackAction {
+    pub fn new(attacker_id: u32, target_id: u32, damage: i32) -> Self {
+        AttackAction {
+            attacker_id,
+            target_id,
+            damage,
+        }
+    }
+
+    pub fn execute(&self, world: &mut World, map: &Map) {
+        perform_attack(world, map, self.attacker_id, self.target_id, self.damage);
+    }
+}
