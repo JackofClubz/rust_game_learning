@@ -16,6 +16,18 @@ impl GameEngine {
             map: map::Map::new(),
             player: player::Player::new(),
             enemies: Vec::new(),
+
+            for enemy in &mut self.enemies {
+                enemy.update();
+            }
+
+            //fps
+            let fps = 60.0;
+            if let Some(delta_time) = self.get_delta_time() {
+                if delta_time < 1.0 / fps {
+                    std::thread::sleep(std::time::Duration::from_secs_f32(1.0 / fps - delta_time));
+                }
+            }
         }
     }
 

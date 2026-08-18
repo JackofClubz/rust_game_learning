@@ -45,6 +45,13 @@ impl State {
 
 impl GameState for State{
     fn tick(&mut self, ctx:&mut BTerm){
+
+        //game engine trigger
+        self.world.update();
+        for enemy in &mut self.world.enemies{
+            enemy.update();{
+            
+        }
         // Read input and update player position
         if let Some(action) = handle_input(ctx){
             match action{
