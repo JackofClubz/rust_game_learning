@@ -28,6 +28,11 @@ impl GameEngine {
                     std::thread::sleep(std::time::Duration::from_secs_f32(1.0 / fps - delta_time));
                 }
             }
+
+            let unity_engine = UnityEngine::new();
+            if unity_engine.is_initialized() {
+                unity_engine.render();
+            }
         }
     }
 
@@ -56,5 +61,11 @@ impl GameEngine {
         let mut unity_engine = UnityEngine::new();
         unity_engine.initialize();
         render();
+    }
+
+    pub fn get_delta_time(&self) -> Option<f32> {
+        // Implement logic to calculate delta time between frames
+        // Return Some(delta_time) if available, otherwise None
+        None
     }
 }

@@ -75,6 +75,12 @@ pub fn copy_from_device<T>(device_buffer: &CudaBuffer<T>, host_data: &mut [T]) {
             cudaMemcpyKind::DeviceToHost,
         );
     }
+    if host_data.len() != device_buffer.size() {
+        panic!("Host data length does not match device buffer size");
+    }else{
+        let mut device_data: Vec<T> = vec![unsafe { std::mem::zeroed() }; device_buffer.size()];
+        copy_from_device(device_buffer, &mut device_data);
+    }
 }
 
 impl<T> Drop for CudaBuffer<T> {
