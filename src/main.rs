@@ -38,7 +38,14 @@ impl State {
             .for_each(|room| {
                 world.spawn_enemy(room.centre_point());
             });
-        
+
+        map.update_fov(world.player_position(), 3);
+
+        let engine = GameEngine::new();
+        render_draw_buffer(bterm);
+        if engine.is_initialized() {
+            engine.render();
+        }        
         State { world, map }
     }
 }
